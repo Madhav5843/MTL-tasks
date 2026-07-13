@@ -1,1 +1,0 @@
-# Monitoring & Alerting Readiness – Notes
