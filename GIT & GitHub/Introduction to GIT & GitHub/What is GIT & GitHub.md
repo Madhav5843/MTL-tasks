@@ -6,9 +6,12 @@ Git tracks changes made to your project files.
 If you make a mistake, Git lets you go back to an earlier version of your code.
 Better than using only Ctrl + Z because Git keeps a complete history of changes.
 Example
+Python
+1
 print("Hello")
+2
 print("New Change")
-
+Show more lines
 
 If the new change causes an issue, Git can restore the previous working version.
 
@@ -45,11 +48,16 @@ A commit is a snapshot of your project at a specific time.
 
 Example:
 
+Plain Text
+1
 Commit 1 → Initial Project
+2
 Commit 2 → Added Login Page
+3
 Commit 3 → Fixed Bug
+4
 Commit 4 → Updated Image
-
+Show more lines
 
 You can return to any commit whenever needed.
 
@@ -102,18 +110,30 @@ Allows rollback to older versions ✅
 So GitHub is much more powerful for software development.
 
 Real Workflow
+Plain Text
+1
 1. Write code on local computer
-         ↓
+2
+↓
+3
 2. Git tracks changes
-         ↓
+4
+↓
+5
 3. Create Commit (Snapshot)
-         ↓
+6
+↓
+7
 4. Push Commit to GitHub
-         ↓
+8
+↓
+9
 5. Team members Pull changes
-         ↓
+10
+↓
+11
 6. Continue development
-
+Show more lines
 Interview Question Answer
 What is Git?
 
