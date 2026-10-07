@@ -209,8 +209,7 @@ Confirm that the application/database version has been updated as part of the de
 ### Example Query
 
 ```sql
-SELECT *
-FROM t_version;
+SELECT * FROM t_version;
 ```
 
 ### Validation
