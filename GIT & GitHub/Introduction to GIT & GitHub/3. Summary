@@ -1,0 +1,48 @@
+Summary Section 1
+Section 1: Introduction to Git and GitHub – 
+Combined Summary
+Overview
+This section introduces Git and GitHub, explaining what they are, why they are 
+used, and how to set them up. It covers version control, collaboration, backups, 
+and installation of Git.
+Main Concepts
+Git
+A version control system installed locally on your computer.
+Tracks changes in your project files over time.
+Allows you to record snapshots (commits) of your project, which can be used 
+to revert to previous states.
+Useful for managing code efficiently instead of relying on undoing changes 
+manually.
+GitHub
+An online hosting service for Git repositories.
+Stores your project files and commit history online.
+Supports collaboration: multiple contributors can work on a project, upload 
+changes, and merge them.
+Acts as a backup so you can retrieve files if your local copy is lost.
+Repositories can be private (restricted access) or public (shared with 
+everyone).
+1
+Summary Section 1
+Key Terms
+Commit Snapshot of your project at a certain point in time.
+Repository (repo) Storage for your project files and commit history.
+Contributor A person who contributes code to a repository.
+Snapshots Another term for commits; used to track changes over time.
+Git and GitHub Setup
+Creating a GitHub Account
+Go to 
+github.com and sign up for a free account.
+Installing Git
+Mac (via Homebrew):
+brew install git
+Verify installation / see help string:
+git
+Windows/Linux: Download the installer from the Git website and follow the 
+setup instructions.
+Key Takeaways
+ Git tracks changes and manages project history locally.
+ GitHub hosts Git repositories, enabling collaboration, version history, and 
+backup.
+ Commits are snapshots that allow you to revert changes when needed.
+ Setting up Git involves installing it on your machine and verifying it via the 
+terminal.
