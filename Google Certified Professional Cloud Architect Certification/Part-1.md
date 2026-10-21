@@ -1,1116 +1,832 @@
-Absolutely. Since this is certification training, a study-notes format is much more useful than a normal meeting recap. Below are detailed Day 1 notes from the transcribed content available for Training Batch 1 || Google Certified Professional Cloud Architect Certification. The meeting search itself returned no additional result, so these notes are based on the meeting transcript already available in this conversation.
+# Google Professional Cloud Architect (PCA)
+## Day 1 Study Notes: Google Cloud Fundamentals, IAM, Compute & Networking
 
-Google Professional Cloud Architect Training
-Day 1 Study Notes
-1. Training structure
+> **Purpose:** Quick-reference notes for revision and recall. These notes are based on the Day 1 training transcript. Topics marked as “introduced” were not covered in depth during this session.
 
-Ashutosh S. Bhakare described this as an 8-day training program aimed at Google Professional Cloud Architect preparation.
+---
 
-Main areas planned:
+## Table of Contents
 
-Google Cloud fundamentals
-Architecting with Compute Engine
-Terraform
-Google Kubernetes Engine (GKE)
-Observability
-Exam preparation
+1. [Training Overview](#1-training-overview)
+2. [Cloud Computing Fundamentals](#2-cloud-computing-fundamentals)
+3. [Cloud Service Models](#3-cloud-service-models)
+4. [Regions, Zones, and Global Infrastructure](#4-regions-zones-and-global-infrastructure)
+5. [Open Source and Vendor Lock-in](#5-open-source-and-vendor-lock-in)
+6. [Pricing, Quotas, and Budgets](#6-pricing-quotas-and-budgets)
+7. [Resource Hierarchy](#7-resource-hierarchy)
+8. [Project Name, ID, and Number](#8-project-name-id-and-number)
+9. [IAM and Roles](#9-iam-and-roles)
+10. [Service Accounts and Cloud Identity](#10-service-accounts-and-cloud-identity)
+11. [Ways to Access Google Cloud](#11-ways-to-access-google-cloud)
+12. [Google Cloud Marketplace](#12-google-cloud-marketplace)
+13. [VPC and Subnets](#13-vpc-and-subnets)
+14. [Compute Engine and Compute Choices](#14-compute-engine-and-compute-choices)
+15. [Machine Types and Scaling](#15-machine-types-and-scaling)
+16. [Spot VMs and VM Costs](#16-spot-vms-and-vm-costs)
+17. [Routes and Firewall Rules](#17-routes-and-firewall-rules)
+18. [VPC Peering and Shared VPC](#18-vpc-peering-and-shared-vpc)
+19. [Load Balancing, DNS, and CDN](#19-load-balancing-dns-and-cdn)
+20. [Hybrid and Private Connectivity](#20-hybrid-and-private-connectivity)
+21. [Day 1 Exam Cheat Sheet](#21-day-1-exam-cheat-sheet)
+22. [Practice Questions](#22-practice-questions)
+23. [Topics to Revisit Later](#23-topics-to-revisit-later)
 
-The overall program has 19 labs. The trainer advised participants to concentrate on understanding the theory and demonstrations during class. Step-by-step guidance for labs would also be shared so they can be completed separately.
+---
 
-The PCA exam was described in the session as:
+## 1. Training Overview
 
-Around 2 hours
-Roughly 50–60 questions
-Scenario/case-study oriented
-Dedicated exam-preparation discussion planned toward the end of the training
-Module 1: Google Cloud Fundamentals
-2. What is cloud computing?
+The training was described as an **8-day program** for Google Professional Cloud Architect certification preparation.
 
-A simple way the trainer introduced cloud was as using somebody else's computing infrastructure rather than owning all the physical hardware yourself.
+Planned areas:
+- Google Cloud fundamentals
+- Architecting with Compute Engine
+- Terraform
+- Google Kubernetes Engine (GKE)
+- Observability
+- Exam preparation
 
-The important cloud characteristics discussed were:
+The trainer mentioned **19 labs**. The advice was to focus on understanding the theory and demonstrations during class, then use the supplied step-by-step guidance to complete labs separately.
 
-On-demand self-service
+### Exam format discussed in the session
+- Around 2 hours
+- Roughly 50–60 questions
+- Scenario- and case-study-oriented
+- A dedicated exam-preparation discussion was planned toward the end of training
 
-Resources can be provisioned whenever required without waiting for someone at the cloud provider to manually create them.
+---
 
-Example from the quiz:
- A developer launches three VMs through the console at 2 AM without contacting the provider.
+## 2. Cloud Computing Fundamentals
 
-Answer: On-demand self-service.
+Cloud computing means using a cloud provider's computing infrastructure instead of owning and maintaining all physical hardware yourself.
 
-Broad network access
+### Key characteristics
 
-Cloud resources can be accessed through networks from different locations.
+| Characteristic | Meaning | Example |
+|---|---|---|
+| On-demand self-service | Provision resources when needed without waiting for the provider to create them manually. | A developer creates VMs at 2 AM through the console. |
+| Broad network access | Services can be accessed over networks from different locations. | Accessing cloud resources through a browser or API. |
+| Resource pooling | Provider infrastructure is pooled to serve customers. | Shared underlying provider infrastructure. |
+| Rapid elasticity | Capacity can grow or shrink with demand. | Increase servers during a traffic spike, then reduce them afterward. |
+| Measured service / pay-as-you-go | Usage is measured and billed according to the applicable pricing model. | Paying for cloud resources based on consumption or provisioning. |
 
-Resource pooling
+**Exam cue:** If a scenario says resources are created whenever required without provider intervention, think **on-demand self-service**. If capacity automatically or quickly expands and contracts with demand, think **rapid elasticity**.
 
-The provider's underlying infrastructure is pooled and used to serve customers.
+---
 
-Rapid elasticity
+## 3. Cloud Service Models
 
-Capacity can increase or decrease depending upon demand.
+### IaaS: Infrastructure as a Service
+The provider manages the physical infrastructure, such as physical servers, networking, virtualization, and underlying storage infrastructure. The customer manages more of the layers above the infrastructure.
 
-Example:
+- Example discussed: Compute Engine VM
+- Memory trick: **IaaS = Rent infrastructure**
 
-Normal traffic → 2 servers
- Festival traffic → increase capacity
- Traffic drops → reduce capacity
+### PaaS: Platform as a Service
+The provider manages more of the underlying platform, allowing the user to focus more on building and running the application.
 
-This was identified as rapid elasticity.
+- Memory trick: **PaaS = Build and run applications on a managed platform**
 
-Measured / pay-as-you-go usage
+### SaaS: Software as a Service
+A complete application is delivered as a service. Users generally do not manage the application's underlying servers or patches.
 
-You pay according to resource consumption rather than purchasing all infrastructure permanently.
+- Examples discussed: Gmail and Google Docs
+- Memory trick: **SaaS = Use the software**
 
-3. Cloud service models
+**Example question:** A team uses Gmail and Google Docs without managing servers or patches. Which service model is this?
 
-The session covered three fundamental models.
+**Answer:** SaaS.
 
-IaaS: Infrastructure as a Service
+---
 
-The cloud provider manages the physical infrastructure, including areas such as:
+## 4. Regions, Zones, and Global Infrastructure
 
-networking
-virtualization
-physical servers
-underlying storage infrastructure
+The hierarchy introduced in the session:
 
-The customer has greater responsibility for things above the infrastructure layer.
+```text
+Global infrastructure
+└── Regions
+    └── Zones
+```
 
-Example
+- **Region:** A geographical area.
+- **Zone:** A deployment area within a region.
+- Deploying across multiple zones can help protect workloads against a single-zone outage.
+- Deploying across multiple regions can help serve users in different geographical areas, reduce latency, and improve resilience against a regional failure. Replication depends on the service and architecture.
 
-Compute Engine VM
+### Multi-zone example
 
-If you provision CPU, memory and disk resources, you pay for those provisioned resources based on the applicable pricing model.
-
-Easy memory trick
-
-IaaS = Rent infrastructure
-
-PaaS: Platform as a Service
-
-More of the underlying platform is managed by the cloud provider.
-
-The user focuses more heavily on the application instead of managing infrastructure.
-
-Easy memory trick
-
-PaaS = Build/run applications on a managed platform
-
-SaaS: Software as a Service
-
-The complete application is provided as a service.
-
-Examples discussed:
-
-Gmail
-Google Docs
-
-You do not normally need to think about the application's underlying servers or patches.
-
-Exam question
-
-Your team uses Gmail and Google Docs and never thinks about servers or patches. Which service model?
-
-Answer: SaaS
-
-4. GCP regions and zones
-
-This is an important PCA concept.
-
-The trainer explained the hierarchy broadly as:
-
-Global infrastructure → Regions → Zones
-
-A region represents a geographical area.
-
-A region contains multiple zones.
-
-Zones allow workloads to be distributed for higher availability.
-
-Multi-zone architecture
-
-Example:
-
+```text
 Region
-  |
-  +-- Zone A → App instance
-  |
-  +-- Zone B → App instance
+├── Zone A → Application instance
+└── Zone B → Application instance
+```
 
+If one zone becomes unavailable, an application deployed across other zones may continue operating.
 
-If one zone becomes unavailable, workloads placed across other zones can help maintain availability.
+### Multi-region concept
 
-Exam concept
+```text
+APAC users → APAC region
+Europe users → Europe region
+```
 
-Application deployed in:
+The trainer also discussed Google's private/premium network backbone as a way to provide connectivity between locations, highlighting throughput and latency benefits.
 
-asia-south1-a
-asia-south1-b
+---
 
+## 5. Open Source and Vendor Lock-in
 
-The key protection being demonstrated is against a single-zone outage.
-
-5. Multi-region architecture
-
-For applications serving users across large geographical areas, resources can be deployed across regions.
-
-Conceptually:
-
-Users in APAC
-      |
- APAC Region
-
-Users in Europe
-      |
- Europe Region
-
-
-The trainer highlighted benefits such as:
-
-lower latency
-resilience against regional failure
-placing services/data closer to users
-
-Depending on the service, replication can be configured between locations.
-
-6. Google network infrastructure
-
-The session discussed Google's private/premium network backbone.
-
-The key idea is that Google's global network infrastructure provides connectivity between regions and locations.
-
-The trainer associated Google's premium network with:
-
-higher throughput
-lower latency
-
-This was presented as one of the important characteristics of Google's infrastructure.
-
-7. Open source and avoiding vendor lock-in
-
-An important architectural theme discussed was Google's use of open-source technologies.
+The session presented open-source technologies as one approach that can help reduce vendor lock-in.
 
 Examples mentioned:
+- **Kubernetes:** GKE is based on Kubernetes. Kubernetes' broad ecosystem can make containerized applications more portable between environments.
+- **TensorFlow:** Google's open-source machine-learning framework.
+- **Gemma:** Google's open model family.
+- **ADK:** Google's agent development framework was also mentioned.
 
-Kubernetes
+**Exam cue:** When a question asks which approach may help avoid vendor lock-in, consider open and widely supported technologies such as Kubernetes.
 
-GKE is based around Kubernetes.
+---
 
-Because Kubernetes is open source and widely supported, containerized applications can potentially be easier to move between environments compared with completely proprietary solutions.
+## 6. Pricing, Quotas, and Budgets
 
-TensorFlow
+### Pricing concepts
 
-Mentioned as Google's open-source machine learning framework.
+- **Pay-as-you-go:** Pay according to the applicable resource usage and pricing model.
+- **Sustained use discounts:** Discount concept discussed for resources running for a significant portion of a billing period.
+- **Committed Use Discounts (CUD):** Can suit workloads with predictable, longer-term resource needs.
 
-Gemma
+**Example discussed:** A database is expected to run 24×7 for the next three years. The session's answer was **Committed Use Discount**.
 
-Mentioned as Google's open model family.
+### Cloud Pricing Calculator
 
-ADK
+The trainer demonstrated estimating cloud costs using inputs such as:
+- Number of VM instances
+- Operating system
+- Machine configuration
+- CPU and memory
+- Boot disk size
+- Provisioning choices
 
-The trainer also mentioned Google's open-source agent development framework.
+Use the calculator to estimate the cost of a proposed architecture.
 
-Exam takeaway
+### Quota vs. budget
 
-Question:
+| Concept | Purpose | Example |
+|---|---|---|
+| Quota | Limits resource or API consumption. | A project can make only a specified number of API calls per minute. |
+| Budget | Helps monitor spending and configure notifications. | Receive a notification when spending reaches a configured threshold. |
 
-Which approach can help avoid vendor lock-in?
+**Memory trick:**
+- **Quota = usage limit**
+- **Budget = spending awareness**
 
-The answer discussed was using technologies such as:
+---
 
-Kubernetes and TensorFlow
+## 7. Resource Hierarchy
 
-8. Google Cloud pricing concepts
+A key Google Cloud concept:
 
-Several cost models were discussed.
-
-Pay-as-you-go
-
-Pay based on the resources being consumed.
-
-Sustained use discounts
-
-Discount concepts for workloads running for significant portions of a billing period were introduced.
-
-Committed Use Discounts (CUD)
-
-Useful when you expect to consume resources over a longer committed period.
-
-Example from the session
-
-A database runs 24×7 and is expected to continue for the next three years. Which pricing model fits?
-
-Answer discussed: Committed Use Discount
-
-9. Cloud Pricing Calculator
-
-The trainer demonstrated the Google Cloud pricing calculator.
-
-Examples of inputs included:
-
-number of VM instances
-operating system
-machine configuration
-CPU
-memory
-boot disk size
-provisioning choices
-
-The calculator can be used to estimate the cost of a proposed architecture.
-
-10. Quotas and budgets
-
-These are different ideas.
-
-Quota
-
-A quota limits resource/API consumption.
-
-Examples discussed included restricting:
-
-number of resources
-API calls
-Exam example
-
-A project supports only a specified number of API calls per minute and the count resets afterward.
-
-Answer: Quota
-
-Budget
-
-Budgets were discussed in the context of cost monitoring and notifications.
-
-Simple distinction
-Quota
-   ↓
-Controls resource/service consumption limits
-
-Budget
-   ↓
-Helps monitor spending
-
-Module 2: Resource Management and IAM
-11. GCP resource hierarchy
-
-One of the most important concepts from Day 1:
-
+```text
 Organization
-     ↓
-   Folder
-     ↓
+└── Folder (optional)
+    └── Project
+        └── Resources
+```
+
+- **Organization:** Top-level organizational node.
+- **Folder:** Groups projects and may contain subfolders. Folders are optional.
+- **Project:** Organizes and manages workloads and resources. Project-level concepts include billing, quotas, APIs/services, and resources.
+- **Resources:** Examples include Compute Engine instances, storage resources, and Kubernetes resources.
+
+A folder is not mandatory. An organization can contain projects directly.
+
+### Policy inheritance
+
+Policies can flow down the hierarchy:
+
+```text
+Organization
+    ↓
+  Folder
+    ↓
   Project
-     ↓
+    ↓
  Resources
+```
 
-Organization
+This hierarchy is important when designing enterprise environments.
 
-Represents the top-level organizational node.
+---
 
-Folder
+## 8. Project Name, ID, and Number
 
-Used to organize projects.
+| Value | Meaning | Changeability described in the session |
+|---|---|---|
+| Project name | Human-friendly display name | Can be changed |
+| Project ID | Identifier associated with the project | Treated as unchangeable once established |
+| Project number | Unique numeric identifier generated for the project | Cannot be changed |
 
-Important: Folders are optional.
+**Exam cue:** If asked which of these can be changed after project creation, the session's answer was **project name**.
 
-You can therefore have:
+---
 
-Organization
-     ↓
-   Project
+## 9. IAM and Roles
 
+### What is IAM?
 
-without requiring a folder.
+IAM answers:
 
-Folders can also contain subfolders.
+> **Who can do what on which resource?**
 
-Project
+```text
+WHO?       → Identity / principal
+DO WHAT?   → Permissions / role
+ON WHAT?   → Resource
+```
 
-The project is where workloads/resources are organized and managed.
+Identities mentioned:
+- Users
+- Groups
+- Service accounts
+- Cloud Identity identities
 
-Important project-level concepts discussed:
+### IAM role categories
 
-billing
-quotas
-APIs/services
-resources
-Resources
+| Role type | Description |
+|---|---|
+| Basic roles | Broad permissions, such as Viewer, Editor, and Owner. Less granular. |
+| Predefined roles | Google-maintained roles for specific services or use cases. |
+| Custom roles | Roles created for more precise permission requirements when existing roles grant more access than needed. |
 
-Examples include:
+The session's memory sequence was:
 
-Compute Engine instances
-storage resources
-Kubernetes resources
-12. Project identifiers
+```text
+Basic → Predefined → Custom
+Broad              → More fine-grained
+```
 
-The trainer identified three important project values:
+### Viewer, Editor, and Owner
 
-Project Name
+- **Viewer:** Primarily allows viewing resources rather than changing them.
+- **Editor:** Can modify many resources but does not provide the same access-management capabilities as Owner.
+- **Owner:** Broad control, including access-management capabilities.
+- **Billing Administrator:** Discussed as a role for billing-related administration.
 
-Human-friendly name.
+**Scenario discussed:** Finance needs to manage project billing but should not change project resources.
 
-Can be changed.
+**Answer discussed:** Billing Administrator.
 
-Project ID
+### IAM Deny
 
-Identifier associated with the project.
+The training emphasized:
 
-According to the session discussion, once established it is not changed.
+> **Deny overrides Allow.**
 
-Project Number
+Example:
+- A user has Editor permissions.
+- A deny policy explicitly blocks deleting a VM.
+- The deletion is blocked.
 
-Unique numeric identifier generated for the project.
+---
 
-It cannot be changed.
+## 10. Service Accounts and Cloud Identity
 
-Exam question
+### Service accounts
 
-Which project identifier can be changed after project creation?
-
-Answer: Project Name
-
-13. Policy inheritance
-
-Policies were described as flowing down the hierarchy.
-
-Conceptually:
-
-Organization policy
-       ↓
-Folder
-       ↓
-Project
-       ↓
-Resources
-
-
-This hierarchical model is important when designing enterprise GCP environments.
-
-14. Identity and Access Management: IAM
-
-The trainer gave one very useful definition:
-
-Who can do what on which resource?
-
-Think of IAM as three questions:
-
-WHO?
-↓
-Identity / principal
-
-CAN DO WHAT?
-↓
-Permissions / role
-
-ON WHAT?
-↓
-Resource
-
-"Who" examples
-
-The session discussed identities including:
-
-users
-groups
-service accounts
-Cloud Identity identities
-15. IAM roles
-
-Three categories were discussed.
-
-Basic roles
-
-Broad permissions.
-
-Examples:
-
-Viewer
-Editor
-Owner
-
-Because they are broad, they offer less granular permission control.
-
-Predefined roles
-
-Created and maintained by Google for particular services/use cases.
-
-Examples discussed included concepts such as:
-
-Compute-related administrator roles
-Storage administrator
-GKE-related roles
-
-These provide more targeted permissions than the basic roles.
-
-Custom roles
-
-Created when existing predefined roles provide more permissions than required.
-
-They allow finer control over what somebody can perform.
-
-Exam memory
-
-From broad → fine-grained:
-
-Basic
-  ↓
-Predefined
-  ↓
-Custom
-
-16. Owner, Editor and Viewer
-
-At a high level as presented in the training:
-
-Viewer
-
-Used for viewing resources rather than changing them.
-
-Editor
-
-Can modify many resources but does not provide the same access-management capabilities as Owner.
-
-Owner
-
-Very broad control, including access-management capabilities.
-
-The trainer also discussed a separate Billing Administrator role for billing-related administration.
-
-Exam scenario
-
-Finance needs to manage project billing but should not change project resources.
-
-Answer discussed: Billing Administrator
-
-17. IAM Deny
-
-Very important principle from today's session:
-
-Deny overrides Allow.
+A service account is an identity primarily intended for workloads and applications rather than a human user.
 
 Example:
 
-A user has Editor permissions that would otherwise permit an operation.
-
-A deny policy explicitly blocks deleting a VM.
-
-Result:
-
-The deletion is blocked.
-
-Remember:
-
-ALLOW + explicit DENY
-          ↓
-        DENY wins
-
-18. Service accounts
-
-A service account is an identity primarily intended for workloads/applications rather than a normal human user.
-
-The trainer used the idea of:
-
+```text
 Service A
-   |
-service identity
-   |
+   ↓
+Service account identity
+   ↓
 Service B
+```
 
+This enables application-to-application access without relying on a person manually entering a username and password.
 
-instead of somebody manually entering a username and password for an application-to-application operation.
+Service accounts were discussed in relation to:
+- APIs
+- Applications and services
+- Tokens and credentials
+- Controlled resource access
 
-Service accounts were discussed in connection with:
+**Memory trick:**
+- User account → Human
+- Service account → Workload/application
 
-APIs
-applications/services
-tokens/credentials
-controlled resource access
-Simple exam understanding
+### Cloud Identity and directory integration
 
-User account → Human
+- **Cloud Identity:** Introduced for centralized identity management.
+- **GCDS (Google Cloud Directory Sync):** Discussed as a way to synchronize users from directory systems such as Active Directory or LDAP into the Google identity environment.
 
-Service account → Workload/application
+---
 
-19. Cloud Identity and directory integration
+## 11. Ways to Access Google Cloud
 
-Cloud Identity was introduced for centralized identity management.
+| Access method | Description / use |
+|---|---|
+| Google Cloud Console | Browser-based GUI for exploring services, creating resources, and administration. |
+| Cloud Shell | Browser-accessible command-line environment. |
+| Cloud SDK / `gcloud` | Command-line tooling for Google Cloud. |
+| APIs and client libraries | Allow scripts and applications to interact with Google Cloud programmatically. Python was mentioned as an example. |
+| Mobile application | Another way to access certain Google Cloud information and actions. |
 
-The trainer also mentioned:
+Tools mentioned as available in Cloud Shell included `gcloud`, Docker, Terraform, and BigQuery tooling.
 
-GCDS: Google Cloud Directory Sync
+---
 
-It was discussed as a way of synchronizing users from directory systems such as Active Directory/LDAP into the Google identity environment.
+## 12. Google Cloud Marketplace
 
-20. Ways to access and manage GCP
+Google Cloud Marketplace provides packaged solutions that can be deployed more quickly than manually installing every component.
 
-The session demonstrated/discussed several interfaces.
+The trainer demonstrated a LAMP stack:
 
-Google Cloud Console
+- **L:** Linux
+- **A:** Apache
+- **M:** MySQL
+- **P:** PHP
 
-Browser-based GUI.
+The demo provisioned supporting resources, including compute and related configuration.
 
-Useful for:
+**Memory trick:** Marketplace = deploy preconfigured solutions more quickly.
 
-exploring services
-creating resources
-administrative operations
-Cloud Shell
+---
 
-Browser-accessible command environment.
+## 13. VPC and Subnets
 
-Tools mentioned as available included:
+### What is a VPC?
 
-gcloud
-Docker
-Terraform
-BigQuery tooling
-Cloud SDK
+A **Virtual Private Cloud (VPC)** provides logical networking and isolation for cloud resources. The session also connected VPC networking with software-defined networking (SDN).
 
-Enables Google Cloud command-line tooling to be used from a local environment.
+### Important scope distinction
 
-API / client libraries
+The key point emphasized during the session:
 
-Applications/scripts can interact programmatically with Google Cloud.
+```text
+VPC     = GLOBAL
+Subnet  = REGIONAL
+VM      = ZONAL
+```
 
-Python was among the examples discussed.
+- A VPC network is global.
+- A subnet is regional.
+- A VM instance is zonal.
 
-Mobile application
+### Regional subnets
 
-Also mentioned as another mechanism for accessing certain Google Cloud information/actions.
+A regional subnet can be used by VMs in different zones within that region.
 
-Module 3: Marketplace, Compute and Networking
-21. Google Cloud Marketplace
+```text
+Global VPC
+└── Regional subnet
+    ├── VM in Zone A
+    ├── VM in Zone B
+    └── VM in Zone C
+```
 
-The trainer demonstrated Google Cloud Marketplace using a LAMP stack.
+**Exam cue:** VMs in different zones can share one subnet because the subnet is **regional**, not zonal.
 
-LAMP:
-
-L → Linux
-A → Apache
-M → MySQL
-P → PHP
-
-
-Instead of manually installing each component individually, Marketplace provides packaged solutions that can provision a stack.
-
-The demo created supporting resources such as the Compute resource and related configuration.
-
-Takeaway
-
-Marketplace = deploy preconfigured solutions more quickly.
-
-22. VPC: Virtual Private Cloud
-
-One of today's most important networking topics.
-
-VPC provides logical networking/isolation for cloud resources.
-
-The trainer also connected this with software-defined networking (SDN).
-
-23. GCP VPC scope
-
-VERY IMPORTANT EXAM POINT
-
-VPC network
-
-Global
-
-Subnet
-
-Regional
-
-So remember:
-
-VPC    = GLOBAL
-Subnet = REGIONAL
-VM     = ZONAL
-
-
-This is worth memorizing.
-
-24. Regional subnets
-
-Unlike designs where you think in terms of a subnet belonging to one availability zone, the trainer emphasized that a GCP subnet is regional.
-
-For example:
-
-VPC - Global
- |
- +-- Subnet A - Region
-       |
-       +-- VM - Zone A
-       |
-       +-- VM - Zone B
-       |
-       +-- VM - Zone C
-
-
-VMs can therefore exist in different zones while using the same regional subnet.
-
-Exam question
-
-Why can VMs in multiple zones share one subnet?
-
-Because a subnet is regional, not zonal.
-
-25. Multiple VPCs
+### Multiple VPCs
 
 The trainer confirmed that one project can contain multiple VPC networks.
 
-Conceptually:
-
+```text
 Project
- |
- +-- VPC-A
- |
- +-- VPC-B
- |
- +-- VPC-C
+├── VPC-A
+├── VPC-B
+└── VPC-C
+```
 
+### Subnet IP exhaustion
 
-Each provides separate network environments.
+The Q&A discussed two possible approaches when a subnet runs out of available IP addresses:
+1. Expand/edit the subnet IP range when possible.
+2. Create another subnet and place new resources there if needed.
 
-26. Handling subnet IP exhaustion
+---
 
-A question was raised about exhausting a subnet's available IP addresses.
+## 14. Compute Engine and Compute Choices
 
-The trainer discussed two approaches:
+### Compute Engine
 
-Expand/edit the subnet's IP range when possible.
-Create another subnet and place new resources there if necessary.
+Compute Engine provides virtual machines. A VM can include:
+- vCPU
+- Memory
+- Operating system
+- Disks/storage
+- Network interfaces
 
-This came directly from the Q&A rather than the formal slides.
+VMs can be created using:
+- Google Cloud Console
+- `gcloud`
+- API
 
-27. Compute Engine
+The demonstration covered VM name, region/zone, machine type, OS image, boot disk, networking, external IP, and creation. Linux VM access was demonstrated through SSH. A Windows Server VM was also created, with RDP access attempted; the demo experienced connection/loading delays.
 
-Compute Engine provides virtual machines.
+### Choosing a compute option
 
-A VM can include:
+| Requirement | Option introduced in the session |
+|---|---|
+| VM-based workload | Compute Engine |
+| Kubernetes/container orchestration | Google Kubernetes Engine (GKE) |
+| Serverless application/container | Cloud Run |
+| Event-driven function | Cloud Run functions |
 
-vCPU
-memory
-operating system
-disks/storage
-network interfaces
+The session mentioned both stateful and stateless applications in the GKE discussion and introduced Cloud Run as an option for stateless applications.
 
-VM instances can be created through methods including:
+---
 
-Console
-gcloud
-API
+## 15. Machine Types and Scaling
 
-The console also showed equivalent CLI/Terraform configuration during the demonstration.
+### Machine-type categories
 
-28. Application deployment choices discussed
+| Category | Typical workload fit described |
+|---|---|
+| General purpose | Balanced CPU and memory for common workloads |
+| Compute optimized | CPU-intensive workloads |
+| Memory optimized | Memory-intensive workloads |
+| Accelerator optimized | Workloads needing accelerators such as GPUs |
 
-The trainer introduced several GCP compute/application options.
+Machine families mentioned included E2, N-series, C-series, and H-series. The trainer recommended checking Google's machine-type documentation rather than relying only on family names.
 
-Compute Engine
+### Vertical vs. horizontal scaling
 
-VM-based workloads.
+**Vertical scaling = scale up/down**
 
-You manage the virtual machine environment.
+Change the capacity of an existing machine.
 
-GKE
+```text
+4 vCPU / 16 GB RAM
+        ↓
+8 vCPU / 32 GB RAM
+```
 
-Google Kubernetes Engine.
-
-Used for containerized workloads with Kubernetes orchestration.
-
-The session mentioned both:
-
-Stateful applications
-Stateless applications
-Cloud Run
-
-Introduced as a serverless option for deploying stateless applications.
-
-Cloud Run functions
-
-Discussed for event-driven workloads/functions.
-
-Mental model
-Need VM?
-→ Compute Engine
-
-Need Kubernetes?
-→ GKE
-
-Need serverless container/application?
-→ Cloud Run
-
-Need event-driven function?
-→ Cloud Run functions
-
-29. Creating a VM
-
-In the demonstration, the trainer went through configuration including:
-
-VM name
-Region/zone
-Machine type
-Operating-system image
-Boot disk
-Networking
-External IP
-Create instance
-
-Linux VM access was demonstrated using SSH.
-
-A Windows Server VM was also created, with access attempted using RDP.
-
-The Windows demonstration experienced connection/loading delays.
-
-30. VM machine types
-
-Four broad workload-oriented categories were discussed.
-
-General purpose
-
-Balanced CPU/memory characteristics for common workloads.
-
-Compute optimized
-
-For CPU/compute-intensive workloads.
-
-Memory optimized
-
-For memory-intensive workloads.
-
-Accelerator optimized
-
-Associated with workloads requiring accelerators such as GPUs.
-
-The trainer also noted that machine families/types have names such as E2, N-series, C-series, H-series, etc., and recommended referring to Google's machine-type documentation rather than relying entirely on naming conventions.
-
-31. Vertical vs horizontal scaling
-
-Another important exam concept.
-
-Vertical scaling: Scale up/down
-
-Increase/decrease the capacity of an existing machine.
-
-Example:
-
-4 vCPU / 16 GB
-       ↓
-8 vCPU / 32 GB
-
-Horizontal scaling: Scale out/in
+**Horizontal scaling = scale out/in**
 
 Change the number of instances.
 
-Example:
+```text
+Before: VM1, VM2
+After:  VM1, VM2, VM3, VM4
+```
 
-VM1
-VM2
+**Memory trick:**
+- Scale **UP** = bigger machine
+- Scale **OUT** = more machines
 
-Traffic increases
-      ↓
+---
 
-VM1
-VM2
-VM3
-VM4
+## 16. Spot VMs and VM Costs
 
-Memorize
+### Spot VMs
 
-Scale UP = Bigger machine
+Spot VMs use excess compute capacity at a lower cost, but the provider can reclaim the capacity. They are therefore not a good fit for workloads that cannot tolerate interruption.
 
-Scale OUT = More machines
+Suitable example discussed:
+- A batch job that can be stopped and restarted.
 
-32. Spot VMs
+**Exam cue:** A night-time batch job can be interrupted and restarted without losing progress. The session's answer was **Spot VM**.
 
-Spot VMs use excess Google Cloud compute capacity at lower cost, with the major trade-off that Google can reclaim/terminate the capacity.
+### VM shutdown and storage costs
 
-Therefore, the trainer specifically warned against depending completely on Spot VMs for workloads that cannot tolerate interruption.
+Stopping a VM stops its compute workload, but attached/provisioned disks can remain and continue to incur storage charges.
 
-Suitable classroom example
-
-A batch job that can be stopped/restarted.
-
-Exam question
-
-A night batch job can be stopped and restarted without losing progress. Which option reduces cost?
-
-Spot VM
-
-33. VM shutdown and storage cost
-
-An interesting participant question was about shutting down Compute Engine VMs.
-
-The trainer explained that when compute is stopped, CPU and memory are no longer being consumed in the same way, but attached/provisioned disk remains and can still incur storage cost.
-
-Easy memory:
-
+```text
 VM stopped
    ↓
-Compute not running
+Compute no longer running
 
 Disk still exists
    ↓
-Storage cost can remain
+Storage cost may continue
+```
 
-34. Routes
+---
 
-Routes allow network traffic to be forwarded toward appropriate destinations.
+## 17. Routes and Firewall Rules
 
-This concept was introduced when discussing communication across network locations/subnets.
+### Routes
 
-35. Firewall rules
+Routes determine where network traffic is forwarded. This concept was introduced during the discussion of communication across network locations and subnets.
 
-Firewall rules control traffic.
+### Firewall rules
 
-The trainer demonstrated targeting firewall behavior using instance/network tags.
+Firewall rules control traffic. The demonstration included targeting firewall behavior using instance/network tags.
 
 Example concept:
 
+```text
 Web VM 1 → tag: web
 Web VM 2 → tag: web
 DB VM    → different tag
 
-Firewall rule targeting "web"
-        ↓
-Web VMs targeted
+Firewall rule targets "web"
+   ↓
+Web VMs are targeted
+```
 
+The trainer warned that loosely controlled tags can be risky in enterprise environments because users sharing a project may apply tags incorrectly. Service-account-based approaches were mentioned as a topic for further coverage.
 
-However, the trainer warned about relying on loosely controlled tags in enterprise environments because users sharing the project may potentially apply tags incorrectly.
+---
 
-Service-account-based approaches were mentioned as something that would be covered further.
+## 18. VPC Peering and Shared VPC
 
-36. VPC Peering
+### VPC Network Peering
 
-Separate VPCs are isolated by default.
+Separate VPCs are isolated by default. VPC Network Peering can establish connectivity between VPC networks.
 
-To establish connectivity between separate VPC networks, VPC Network Peering was introduced.
+```text
+VPC-A ←──── peering ────→ VPC-B
+```
 
-Conceptually:
+**Important: Peering is not transitive.**
 
-VPC-A  ←──── Peering ────→  VPC-B
-
-
-The trainer highlighted that peering is not transitive.
-
-For example:
-
+If:
+```text
 A ↔ B
 B ↔ C
+```
 
-
-does not automatically mean:
-
+It does **not** automatically mean:
+```text
 A ↔ C
+```
 
+Connections need to be established appropriately for the required communication.
 
-This is important when designing many interconnected VPCs.
+### Shared VPC
 
-37. Shared VPC
+Shared VPC was introduced as a way to share a network across multiple projects.
 
-Shared VPC was introduced for sharing a network across multiple projects.
-
-High-level concept:
-
+```text
 Shared VPC
-   |
-   +-- Project A
-   +-- Project B
-   +-- Project C
+├── Project A
+├── Project B
+└── Project C
+```
 
+The detailed implementation was not covered during Day 1.
 
-The detailed implementation was not covered at this stage.
+---
 
-38. Load balancing
+## 19. Load Balancing, DNS, and CDN
 
-Load balancers distribute traffic across multiple backends.
+### Load balancing
 
-Benefits discussed:
+Load balancers distribute traffic across multiple backends. Benefits discussed included availability, traffic distribution, and potentially reduced latency depending on the architecture.
 
-availability
-traffic distribution
-reduced latency depending on architecture
+| Type | Layer | Main idea introduced |
+|---|---|---|
+| Application Load Balancer | Layer 7 | Application/web traffic and proxy behavior; SSL/TLS termination was mentioned. |
+| Network Load Balancer | Layer 4 | Network-level traffic forwarding. |
 
-Two main categories were introduced.
+**Memory trick:**
+- **L7 → Application Load Balancer**
+- **L4 → Network Load Balancer**
 
-Application Load Balancer
+### Cloud DNS
 
-Works at Layer 7.
+Cloud DNS was introduced as a service for mapping names to IP addresses. Google's public DNS address **8.8.8.8** was also mentioned during the discussion.
 
-Associated with application/web traffic and proxy behavior.
+### Cloud CDN
 
-SSL/TLS termination was also mentioned.
+CDN means **Content Delivery Network**.
 
-Network Load Balancer
-
-Works at Layer 4.
-
-Associated with network-level traffic forwarding.
-
-Exam memory
-L7 → Application Load Balancer
-L4 → Network Load Balancer
-
-39. Cloud DNS
-
-Cloud DNS was introduced for mapping names to IP addresses.
-
-Google's public DNS address 8.8.8.8 was also mentioned during the DNS discussion.
-
-40. Cloud CDN
-
-CDN means:
-
-Content Delivery Network
-
-The core concept introduced was caching content closer to consumers so the origin doesn't have to serve every request directly.
+The core concept is to cache content closer to consumers so the origin does not have to serve every request directly.
 
 Benefits discussed:
+- Lower latency
+- Reduced load on the origin
+- Potential cost efficiency
 
-lower latency
-reduced load on origin
-potential cost efficiency
-
-Conceptually:
-
+```text
 User
   ↓
 CDN cache
-  ↓  only when needed
+  ↓ (when needed)
 Origin
+```
 
-41. Hybrid/private connectivity
+These topics were introduced at a high level; detailed implementation was left for later.
 
-Several connectivity options were introduced.
+---
 
-Cloud VPN
+## 20. Hybrid and Private Connectivity
 
-Provides an encrypted tunnel across network connectivity between environments such as on-premises and GCP.
+Several connectivity options were introduced:
 
-On-premises
-    |
- encrypted VPN
-    |
-   GCP
+- **Cloud VPN:** Provides an encrypted tunnel between environments, such as on-premises infrastructure and Google Cloud.
+- **Partner Interconnect:** Connectivity through supported partners/providers.
+- **Dedicated Interconnect:** Dedicated connectivity into Google's network for higher-capacity or private-connectivity requirements.
+- **Peering:** Network peering concepts were also mentioned.
 
-Partner Interconnect
+The session kept this section high-level, with more detailed discussion expected later.
 
-Connectivity through supported partners/providers was introduced.
+---
 
-Dedicated Interconnect
+## 21. Day 1 Exam Cheat Sheet
 
-Dedicated connectivity into Google's network was introduced for higher-capacity/private-connectivity requirements.
+Review this section before moving to the next training day.
 
-Peering
+### Resource hierarchy
 
-Direct/network peering concepts were also mentioned.
-
-The session intentionally kept this section relatively high-level. More detailed discussion was expected later.
-
-Day 1 Exam Cheat Sheet
-
-If you're revising quickly before Day 2, Madhav, memorize these first:
-
-GCP Resource Hierarchy
+```text
 Organization
-   ↓
-Folder
-   ↓
-Project
-   ↓
-Resource
+└── Folder (optional)
+    └── Project
+        └── Resources
+```
 
-IAM
-WHO
- ↓
-can do WHAT
- ↓
-on which RESOURCE
+### IAM
 
-IAM Roles
-Basic → Predefined → Custom
-Broad                 Fine-grained
+```text
+WHO → CAN DO WHAT → ON WHICH RESOURCE
+```
 
-Networking scope
+- Basic roles: broad permissions
+- Predefined roles: service/use-case-specific roles maintained by Google
+- Custom roles: more tailored permissions
+- Deny overrides Allow
 
+### Networking scope
+
+```text
 VPC     → GLOBAL
 Subnet  → REGIONAL
 VM      → ZONAL
+```
 
-Scaling
+### Scaling
 
-Vertical   → Bigger/smaller machine
-Horizontal → More/fewer machines
+- Vertical scaling → bigger or smaller machine
+- Horizontal scaling → more or fewer machines
 
-Load Balancing
+### Load balancing
 
-Layer 7 → Application Load Balancer
-Layer 4 → Network Load Balancer
+- Layer 7 → Application Load Balancer
+- Layer 4 → Network Load Balancer
 
-Pricing
+### Pricing
 
-Interruptible batch workload → Spot
-Long predictable workload    → CUD
+- Interruptible, restartable batch workload → Spot VM
+- Predictable, long-term workload → consider CUD
 
-Compute choice
+### Compute choice
 
-VM                  → Compute Engine
-Kubernetes          → GKE
-Serverless app      → Cloud Run
-Event-driven logic  → Cloud Run functions
+- VM → Compute Engine
+- Kubernetes → GKE
+- Serverless application/container → Cloud Run
+- Event-driven function → Cloud Run functions
 
+### Other high-value reminders
 
-And especially remember:
+- Folders are optional.
+- Project name can change; project ID and project number were described as unchangeable.
+- Subnets are regional, so VMs in different zones can share a subnet.
+- VPC peering is not transitive.
+- Stopping a VM does not automatically eliminate persistent disk storage costs.
+- One project can contain multiple VPCs.
+- Quotas limit consumption; budgets help monitor spending.
 
-Deny overrides Allow
+---
 
-Folders are optional
+## 22. Practice Questions
 
-Project Name can change; Project ID/Number do not
+Try answering these before checking the answers.
 
-Subnet is regional even when VMs are in different zones
+<details>
+<summary><strong>Q1. A developer creates three VMs at 2 AM without contacting the provider. Which cloud characteristic is this?</strong></summary>
 
-VPC Peering is not transitive
+**Answer:** On-demand self-service.
+</details>
 
-Stopping a VM doesn't automatically eliminate persistent storage costs
+<details>
+<summary><strong>Q2. A team uses Gmail and Google Docs without managing servers or patches. Which service model is this?</strong></summary>
 
-Questions covered during the training
+**Answer:** SaaS.
+</details>
 
-Some useful Q&A raised by participants:
+<details>
+<summary><strong>Q3. Which resource-hierarchy component is optional?</strong></summary>
 
-Can one project contain multiple VPCs?
- Yes, according to the trainer.
+**Answer:** Folder.
+</details>
 
-Can VMs in separate zones use the same subnet?
- Yes. The reason emphasized was that subnets are regional.
+<details>
+<summary><strong>Q4. Which project value can be changed according to the training discussion: name, ID, or number?</strong></summary>
 
-What happens if a subnet runs out of IP addresses?
- The trainer discussed expanding the subnet range where possible or creating another subnet.
+**Answer:** Project name.
+</details>
 
-Is VPC peering transitive?
- No. The trainer said connections need to be established individually where required.
+<details>
+<summary><strong>Q5. What three questions does IAM answer?</strong></summary>
 
-Can roles/permissions themselves incur a cost?
- The trainer answered no in the IAM discussion.
+**Answer:** Who can do what on which resource?
+</details>
 
-Do the labs require the participant's own GCP credits?
- The trainer said temporary lab access/credits would be provided through the training vendor.
+<details>
+<summary><strong>Q6. A user has an Allow permission, but a deny policy explicitly blocks the operation. What happens?</strong></summary>
 
-Items planned for later
+**Answer:** The denied operation is blocked; deny overrides allow.
+</details>
 
-These topics were introduced but not covered deeply enough in Day 1 to treat today's discussion as complete study material:
+<details>
+<summary><strong>Q7. Can VMs in different zones within a region use the same subnet?</strong></summary>
 
-Detailed machine types
-Detailed scaling configuration
-Firewall configuration
-Detailed load balancer implementation
-CDN implementation
-DNS implementation
-Detailed GKE
-Terraform
-Observability
-Detailed hybrid networking
-More practical labs
-PCA exam/case-study preparation
+**Answer:** Yes. A subnet is regional.
+</details>
 
-Also, the trainer indicated that the remaining labs/details would continue in subsequent sessions, so I would keep those as separate Day 2+ notes rather than mixing them into today's material.
+<details>
+<summary><strong>Q8. Is a VPC global, regional, or zonal? What about a subnet and a VM?</strong></summary>
+
+**Answer:** VPC = global; subnet = regional; VM = zonal.
+</details>
+
+<details>
+<summary><strong>Q9. A batch job can be interrupted and restarted. Which lower-cost VM option was discussed?</strong></summary>
+
+**Answer:** Spot VM.
+</details>
+
+<details>
+<summary><strong>Q10. What is the difference between vertical and horizontal scaling?</strong></summary>
+
+**Answer:** Vertical scaling changes the size/capacity of a machine. Horizontal scaling changes the number of instances.
+</details>
+
+<details>
+<summary><strong>Q11. If A peers with B and B peers with C, does A automatically connect to C?</strong></summary>
+
+**Answer:** No. VPC peering is not transitive.
+</details>
+
+<details>
+<summary><strong>Q12. Which load balancer layer was associated with application traffic in the session?</strong></summary>
+
+**Answer:** Layer 7, Application Load Balancer.
+</details>
+
+<details>
+<summary><strong>Q13. A project needs to limit API calls per minute. Is this a quota or a budget?</strong></summary>
+
+**Answer:** Quota.
+</details>
+
+<details>
+<summary><strong>Q14. What cost may remain after a VM is stopped?</strong></summary>
+
+**Answer:** Attached/provisioned disk storage costs may continue.
+</details>
+
+<details>
+<summary><strong>Q15. Which option was discussed for managing project billing without changing project resources?</strong></summary>
+
+**Answer:** Billing Administrator.
+</details>
+
+---
+
+## 23. Topics to Revisit Later
+
+The trainer identified these as topics introduced or planned for subsequent sessions, rather than fully covered in Day 1:
+
+- Detailed machine types
+- Detailed scaling configuration
+- Firewall configuration
+- Load balancer implementation
+- CDN implementation
+- DNS implementation
+- Detailed GKE
+- Terraform
+- Observability
+- Detailed hybrid networking
+- More practical labs
+- PCA exam and case-study preparation
+
+Keep these in separate day-wise notes as the training progresses.
+
+---
+
+## Final Revision Checklist
+
+Use this checklist when revising Day 1:
+
+- [ ] Explain the five cloud characteristics.
+- [ ] Differentiate IaaS, PaaS, and SaaS.
+- [ ] Explain regions and zones and why multi-zone deployment helps availability.
+- [ ] Differentiate pay-as-you-go, CUD, quota, and budget.
+- [ ] Draw the Organization → Folder → Project → Resource hierarchy.
+- [ ] Explain project name, project ID, and project number.
+- [ ] Explain IAM principals, roles, and deny policies.
+- [ ] Explain service accounts and Cloud Identity at a high level.
+- [ ] Remember VPC = global, subnet = regional, VM = zonal.
+- [ ] Choose between Compute Engine, GKE, Cloud Run, and Cloud Run functions.
+- [ ] Explain vertical versus horizontal scaling.
+- [ ] Explain Spot VM trade-offs and persistent disk costs.
+- [ ] Explain why VPC peering is not transitive.
+- [ ] Differentiate Layer 4 and Layer 7 load balancing.
+- [ ] Summarize VPN, Partner Interconnect, and Dedicated Interconnect at a high level.
